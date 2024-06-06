@@ -1,0 +1,131 @@
+24-06-05 20:35:30.699 - INFO:   name: hardi150_v5
+  phase: train
+  gpu_ids: [0]
+  path:[
+    log: C:/Users/ebjor/DDM2/logs_v5
+    tb_logger: C:/Users/ebjor/DDM2/tb_logger_v5
+    results: C:/Users/ebjor/DDM2/results_v5
+    checkpoint: C:/Users/ebjor/DDM2/checkpoint_v5
+    resume_state: None
+    experiments_root: experiments\hardi150_v5_240605_203530
+  ]
+  datasets:[
+    train:[
+      name: hardi
+      dataroot: C:/Users/ebjor/.dipy/stanford_hardi/HARDI150.nii.gz
+      valid_mask: [10, 160]
+      phase: train
+      padding: 3
+      val_volume_idx: 40
+      val_slice_idx: 40
+      batch_size: 16
+      in_channel: 1
+      num_workers: 0
+      use_shuffle: True
+    ]
+    val:[
+      name: hardi
+      dataroot: C:/Users/ebjor/.dipy/stanford_hardi/HARDI150.nii.gz
+      valid_mask: [10, 160]
+      phase: val
+      padding: 3
+      val_volume_idx: 40
+      val_slice_idx: 40
+      batch_size: 1
+      in_channel: 1
+      num_workers: 0
+      data_len: 3
+    ]
+  ]
+  model:[
+    which_model_G: mri
+    finetune_norm: False
+    drop_rate: 0.0
+    unet:[
+      in_channel: 1
+      out_channel: 1
+      inner_channel: 32
+      norm_groups: 32
+      channel_multiplier: [1, 2, 4, 8]
+      attn_res: [16]
+      res_blocks: 1
+      dropout: 0.0
+      version: v2
+    ]
+    beta_schedule:[
+      train:[
+        schedule: cosine
+        n_timestep: 1000
+        linear_start: 0.0001
+        linear_end: 0.01
+      ]
+      val:[
+        schedule: cosine
+        n_timestep: 1000
+        linear_start: 0.0001
+        linear_end: 0.01
+      ]
+    ]
+    diffusion:[
+      image_size: 128
+      channels: 3
+      conditional: True
+    ]
+  ]
+  train:[
+    n_iter: 2000
+    val_freq: 100
+    save_checkpoint_freq: 500
+    print_freq: 50
+    optimizer:[
+      type: adam
+      lr: 0.0002
+    ]
+    ema_scheduler:[
+      step_start_ema: 500
+      update_ema_every: 1
+      ema_decay: 0.995
+    ]
+  ]
+  noise_model:[
+    resume_state: None
+    drop_rate: 0.0
+    unet:[
+      in_channel: 2
+      out_channel: 1
+      inner_channel: 32
+      norm_groups: 32
+      channel_multiplier: [1, 2, 4, 8]
+      attn_res: [16]
+      res_blocks: 1
+      dropout: 0.0
+      version: v2
+    ]
+    beta_schedule:[
+      schedule: cosine
+      linear_start: 0.0001
+      linear_end: 0.01
+    ]
+    n_iter: 1000
+    val_freq: 100
+    save_checkpoint_freq: 500
+    print_freq: 10
+    optimizer:[
+      type: adam
+      lr: 0.0002
+    ]
+  ]
+  stage2_file: C:/Users/ebjor/DDM2/checkpoint_v5/initial_stage.txt
+  distributed: False
+
+24-06-05 20:35:35.769 - INFO: MRI dataset [hardi] is created.
+24-06-05 20:35:38.382 - INFO: MRI dataset [hardi] is created.
+24-06-05 20:35:38.382 - INFO: Initial Dataset Finished
+24-06-05 20:35:42.614 - INFO: Initialization method [orthogonal]
+24-06-05 20:35:45.844 - INFO: [DDM2] is created.
+24-06-05 20:35:45.845 - INFO: Initial Model Finished
+24-06-05 20:36:05.283 - INFO: <epoch:  1, iter:      50> l_pix: 3.6966e-02 
+24-06-05 20:36:17.483 - INFO: <epoch:  1, iter:     100> l_pix: 2.4779e-02 
+24-06-05 20:36:56.347 - INFO: <epoch:  1, iter:     150> l_pix: 1.4930e-02 
+24-06-05 20:37:10.385 - INFO: <epoch:  1, iter:     200> l_pix: 1.4864e-02 
+24-06-05 20:38:26.524 - INFO: <epoch:  1, iter:     250> l_pix: 1.9317e-02 

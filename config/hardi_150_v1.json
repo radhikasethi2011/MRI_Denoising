@@ -1,0 +1,133 @@
+{
+    "name": "hardi150",
+    "phase": "train",
+    "gpu_ids": [
+        0
+    ],
+    "path": {
+        "log": "C:/Users/ebjor/DDM2/logs",
+        "tb_logger": "C:/Users/ebjor/DDM2/tb_logger",
+        "results": "C:/Users/ebjor/DDM2/results",
+        "checkpoint": "C:/Users/ebjor/DDM2/checkpoint",
+        "resume_state": null
+    },
+    "datasets": {
+        "train": {
+            "name": "hardi",
+            "dataroot": "C:/Users/ebjor/.dipy/stanford_hardi/HARDI150.nii.gz",
+            "valid_mask": [10, 160],
+            "phase": "train",
+            "padding": 3,
+            "val_volume_idx": 40,
+            "val_slice_idx": 40,
+            "batch_size": 16,
+            "in_channel": 1,
+            "num_workers": 0,
+            "use_shuffle": true
+        },
+        "val": {
+            "name": "hardi",
+            "dataroot": "C:/Users/ebjor/.dipy/stanford_hardi/HARDI150.nii.gz",
+            "valid_mask": [10, 160],
+            "phase": "val",
+            "padding": 3,
+            "val_volume_idx": 40,
+            "val_slice_idx": 40,
+            "batch_size": 1,
+            "in_channel": 1,
+            "num_workers": 0
+        }
+    },
+    "model": {
+        "which_model_G": "mri",
+        "finetune_norm": false,
+        "drop_rate": 0.0,
+        "unet": {
+            "in_channel": 1,
+            "out_channel": 1,
+            "inner_channel": 16,
+            "norm_groups": 16,
+            "channel_multiplier": [
+                1,
+                2,
+                2,
+                4
+            ],
+            "attn_res": [
+                16
+            ],
+            "res_blocks": 1,
+            "dropout": 0.0,
+            "version": "v1"
+        },
+        "beta_schedule": {
+            "train": {
+                "schedule": "rev_warmup70",
+                "n_timestep": 500,
+                "linear_start": 5e-5,
+                "linear_end": 1e-2
+            },
+            "val": {
+                "schedule": "rev_warmup70",
+                "n_timestep": 500,
+                "linear_start": 5e-5,
+                "linear_end": 1e-2
+            }
+        },
+        "diffusion": {
+            "image_size": 128,
+            "channels": 3,
+            "conditional": true
+        }
+    },
+    "train": {
+        "n_iter": 2000,
+        "val_freq": 100,
+        "save_checkpoint_freq": 500,
+        "print_freq": 10,
+        "optimizer": {
+            "type": "adam",
+            "lr": 1e-4
+        },
+        "ema_scheduler": {
+            "step_start_ema": 500,
+            "update_ema_every": 1,
+            "ema_decay": 0.999
+        }
+    },
+    "noise_model": {
+        "resume_state": "C:/Users/ebjor/DDM2/checkpoint/latest",
+        "drop_rate": 0.0,
+        "unet": {
+            "in_channel": 2,
+            "out_channel": 1,
+            "inner_channel": 16,
+            "norm_groups": 16,
+            "channel_multiplier": [
+                1,
+                2,
+                2,
+                4
+            ],
+            "attn_res": [
+                16
+            ],
+            "res_blocks": 1,
+            "dropout": 0.0,
+            "version": "v1"
+        },
+        "beta_schedule": {
+            "linear_start": 5e-5,
+            "linear_end": 1e-2
+        },
+        "n_iter": 2000,
+        "val_freq": 100,
+        "save_checkpoint_freq": 500,
+        "print_freq": 10,
+        "optimizer": {
+            "type": "adam",
+            "lr": 1e-4
+        }
+    },
+    "stage2_file": "C:/Users/ebjor/DDM2/checkpoint/initial_stage.txt"
+}

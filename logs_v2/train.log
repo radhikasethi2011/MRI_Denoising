@@ -1,0 +1,199 @@
+24-06-05 10:42:37.260 - INFO:   name: hardi150_v2
+  phase: train
+  gpu_ids: [0]
+  path:[
+    log: C:/Users/ebjor/DDM2/logs_v2
+    tb_logger: C:/Users/ebjor/DDM2/tb_logger_v2
+    results: C:/Users/ebjor/DDM2/results_v2
+    checkpoint: C:/Users/ebjor/DDM2/checkpoint_v2
+    resume_state: None
+    experiments_root: experiments\hardi150_v2_240605_104237
+  ]
+  datasets:[
+    train:[
+      name: hardi
+      dataroot: C:/Users/ebjor/.dipy/stanford_hardi/HARDI150.nii.gz
+      valid_mask: [10, 160]
+      phase: train
+      padding: 3
+      val_volume_idx: 40
+      val_slice_idx: 40
+      batch_size: 16
+      in_channel: 1
+      num_workers: 0
+      use_shuffle: True
+    ]
+    val:[
+      name: hardi
+      dataroot: C:/Users/ebjor/.dipy/stanford_hardi/HARDI150.nii.gz
+      valid_mask: [10, 160]
+      phase: val
+      padding: 3
+      val_volume_idx: 40
+      val_slice_idx: 40
+      batch_size: 1
+      in_channel: 1
+      num_workers: 0
+      data_len: 3
+    ]
+  ]
+  model:[
+    which_model_G: mri
+    finetune_norm: False
+    drop_rate: 0.0
+    unet:[
+      in_channel: 1
+      out_channel: 1
+      inner_channel: 32
+      norm_groups: 32
+      channel_multiplier: [1, 2, 4, 8]
+      attn_res: [16]
+      res_blocks: 2
+      dropout: 0.0
+      version: v2
+    ]
+    beta_schedule:[
+      train:[
+        schedule: rev_warmup70
+        n_timestep: 1000
+        linear_start: 5e-05
+        linear_end: 0.01
+      ]
+      val:[
+        schedule: rev_warmup70
+        n_timestep: 1000
+        linear_start: 5e-05
+        linear_end: 0.01
+      ]
+    ]
+    diffusion:[
+      image_size: 128
+      channels: 3
+      conditional: True
+    ]
+  ]
+  train:[
+    n_iter: 3000
+    val_freq: 100
+    save_checkpoint_freq: 500
+    print_freq: 50
+    optimizer:[
+      type: adam
+      lr: 0.0001
+    ]
+    ema_scheduler:[
+      step_start_ema: 500
+      update_ema_every: 1
+      ema_decay: 0.999
+    ]
+  ]
+  noise_model:[
+    resume_state: C:/Users/ebjor/DDM2/checkpoint_v2/latest
+    drop_rate: 0.0
+    unet:[
+      in_channel: 2
+      out_channel: 1
+      inner_channel: 32
+      norm_groups: 32
+      channel_multiplier: [1, 2, 4, 8]
+      attn_res: [16]
+      res_blocks: 2
+      dropout: 0.0
+      version: v2
+    ]
+    beta_schedule:[
+      linear_start: 5e-05
+      linear_end: 0.01
+    ]
+    n_iter: 3000
+    val_freq: 100
+    save_checkpoint_freq: 500
+    print_freq: 10
+    optimizer:[
+      type: adam
+      lr: 0.0001
+    ]
+  ]
+  stage2_file: C:/Users/ebjor/DDM2/checkpoint_v2/initial_stage.txt
+  distributed: False
+
+24-06-05 10:42:40.207 - INFO: MRI dataset [hardi] is created.
+24-06-05 10:42:41.943 - INFO: MRI dataset [hardi] is created.
+24-06-05 10:42:41.943 - INFO: Initial Dataset Finished
+24-06-05 10:42:44.833 - INFO: Initialization method [orthogonal]
+24-06-05 10:42:45.873 - INFO: Loading stage1 pretrained model for G [C:/Users/ebjor/DDM2/checkpoint_v2/latest_gen.pth] ...
+24-06-05 10:42:45.989 - INFO: [DDM2] is created.
+24-06-05 10:42:45.989 - INFO: Initial Model Finished
+24-06-05 10:43:04.867 - INFO: <epoch:  1, iter:      50> l_pix: 6.9502e-03 
+24-06-05 10:43:20.728 - INFO: <epoch:  1, iter:     100> l_pix: 1.8629e-02 
+24-06-05 10:43:45.539 - INFO: <epoch:  1, iter:     150> l_pix: 1.3574e-02 
+24-06-05 10:44:01.865 - INFO: <epoch:  1, iter:     200> l_pix: 8.9097e-03 
+24-06-05 10:44:27.326 - INFO: <epoch:  1, iter:     250> l_pix: 1.1653e-02 
+24-06-05 10:44:43.764 - INFO: <epoch:  1, iter:     300> l_pix: 1.7706e-02 
+24-06-05 10:45:08.342 - INFO: <epoch:  1, iter:     350> l_pix: 1.5866e-02 
+24-06-05 10:45:25.406 - INFO: <epoch:  1, iter:     400> l_pix: 1.4745e-02 
+24-06-05 10:45:51.779 - INFO: <epoch:  1, iter:     450> l_pix: 5.1026e-03 
+24-06-05 10:46:09.911 - INFO: <epoch:  1, iter:     500> l_pix: 7.7356e-03 
+24-06-05 10:46:18.538 - INFO: Saving models and training states.
+24-06-05 10:46:20.186 - INFO: Saved model in [C:/Users/ebjor/DDM2/checkpoint_v2\latest_gen.pth] ...
+24-06-05 10:46:37.973 - INFO: <epoch:  1, iter:     550> l_pix: 9.9942e-03 
+24-06-05 10:46:55.741 - INFO: <epoch:  1, iter:     600> l_pix: 4.9488e-03 
+24-06-05 10:47:23.275 - INFO: <epoch:  1, iter:     650> l_pix: 1.2052e-02 
+24-06-05 10:47:41.719 - INFO: <epoch:  1, iter:     700> l_pix: 4.7274e-03 
+24-06-05 10:48:08.705 - INFO: <epoch:  2, iter:     750> l_pix: 1.1429e-02 
+24-06-05 10:48:26.956 - INFO: <epoch:  2, iter:     800> l_pix: 6.8610e-03 
+24-06-05 10:48:54.088 - INFO: <epoch:  2, iter:     850> l_pix: 6.2253e-03 
+24-06-05 10:49:12.012 - INFO: <epoch:  2, iter:     900> l_pix: 4.0375e-03 
+24-06-05 10:49:38.808 - INFO: <epoch:  2, iter:     950> l_pix: 7.6496e-03 
+24-06-05 10:49:56.592 - INFO: <epoch:  2, iter:   1,000> l_pix: 1.6992e-02 
+24-06-05 10:50:04.701 - INFO: Saving models and training states.
+24-06-05 10:50:05.142 - INFO: Saved model in [C:/Users/ebjor/DDM2/checkpoint_v2\latest_gen.pth] ...
+24-06-05 10:50:22.829 - INFO: <epoch:  2, iter:   1,050> l_pix: 9.7233e-03 
+24-06-05 10:50:40.805 - INFO: <epoch:  2, iter:   1,100> l_pix: 1.0900e-02 
+24-06-05 10:51:06.473 - INFO: <epoch:  2, iter:   1,150> l_pix: 5.8975e-03 
+24-06-05 10:51:24.321 - INFO: <epoch:  2, iter:   1,200> l_pix: 1.0022e-02 
+24-06-05 10:51:50.332 - INFO: <epoch:  2, iter:   1,250> l_pix: 1.3822e-02 
+24-06-05 10:52:08.230 - INFO: <epoch:  2, iter:   1,300> l_pix: 8.8309e-03 
+24-06-05 10:52:34.196 - INFO: <epoch:  2, iter:   1,350> l_pix: 1.5345e-02 
+24-06-05 10:52:52.261 - INFO: <epoch:  2, iter:   1,400> l_pix: 8.8608e-03 
+24-06-05 10:53:17.913 - INFO: <epoch:  3, iter:   1,450> l_pix: 5.7614e-03 
+24-06-05 10:53:36.614 - INFO: <epoch:  3, iter:   1,500> l_pix: 4.4146e-03 
+24-06-05 10:53:47.754 - INFO: Saving models and training states.
+24-06-05 10:53:51.632 - INFO: Saved model in [C:/Users/ebjor/DDM2/checkpoint_v2\latest_gen.pth] ...
+24-06-05 10:54:10.408 - INFO: <epoch:  3, iter:   1,550> l_pix: 4.5304e-03 
+24-06-05 10:54:29.441 - INFO: <epoch:  3, iter:   1,600> l_pix: 1.0356e-02 
+24-06-05 10:55:03.445 - INFO: <epoch:  3, iter:   1,650> l_pix: 5.8723e-03 
+24-06-05 10:55:22.095 - INFO: <epoch:  3, iter:   1,700> l_pix: 5.2096e-03 
+24-06-05 10:55:49.860 - INFO: <epoch:  3, iter:   1,750> l_pix: 7.2263e-03 
+24-06-05 10:56:07.914 - INFO: <epoch:  3, iter:   1,800> l_pix: 4.8944e-03 
+24-06-05 10:56:34.031 - INFO: <epoch:  3, iter:   1,850> l_pix: 8.3499e-03 
+24-06-05 10:56:51.950 - INFO: <epoch:  3, iter:   1,900> l_pix: 1.2399e-02 
+24-06-05 10:57:19.319 - INFO: <epoch:  3, iter:   1,950> l_pix: 1.1152e-02 
+24-06-05 10:57:37.326 - INFO: <epoch:  3, iter:   2,000> l_pix: 5.8429e-03 
+24-06-05 10:57:45.479 - INFO: Saving models and training states.
+24-06-05 10:57:45.922 - INFO: Saved model in [C:/Users/ebjor/DDM2/checkpoint_v2\latest_gen.pth] ...
+24-06-05 10:58:03.619 - INFO: <epoch:  3, iter:   2,050> l_pix: 5.1233e-03 
+24-06-05 10:58:21.631 - INFO: <epoch:  3, iter:   2,100> l_pix: 4.4835e-03 
+24-06-05 10:58:47.515 - INFO: <epoch:  4, iter:   2,150> l_pix: 5.6728e-03 
+24-06-05 10:59:05.717 - INFO: <epoch:  4, iter:   2,200> l_pix: 1.0626e-02 
+24-06-05 10:59:31.864 - INFO: <epoch:  4, iter:   2,250> l_pix: 8.5619e-03 
+24-06-05 10:59:49.947 - INFO: <epoch:  4, iter:   2,300> l_pix: 4.6382e-03 
+24-06-05 11:00:17.053 - INFO: <epoch:  4, iter:   2,350> l_pix: 1.0198e-02 
+24-06-05 11:00:35.031 - INFO: <epoch:  4, iter:   2,400> l_pix: 7.4341e-03 
+24-06-05 11:01:01.006 - INFO: <epoch:  4, iter:   2,450> l_pix: 1.1385e-02 
+24-06-05 11:01:19.055 - INFO: <epoch:  4, iter:   2,500> l_pix: 3.7166e-03 
+24-06-05 11:01:27.178 - INFO: Saving models and training states.
+24-06-05 11:01:27.624 - INFO: Saved model in [C:/Users/ebjor/DDM2/checkpoint_v2\latest_gen.pth] ...
+24-06-05 11:01:45.300 - INFO: <epoch:  4, iter:   2,550> l_pix: 9.7415e-03 
+24-06-05 11:02:03.828 - INFO: <epoch:  4, iter:   2,600> l_pix: 1.0443e-02 
+24-06-05 11:02:30.749 - INFO: <epoch:  4, iter:   2,650> l_pix: 6.7790e-03 
+24-06-05 11:02:48.631 - INFO: <epoch:  4, iter:   2,700> l_pix: 1.0943e-02 
+24-06-05 11:03:14.615 - INFO: <epoch:  4, iter:   2,750> l_pix: 5.7294e-03 
+24-06-05 11:03:32.648 - INFO: <epoch:  4, iter:   2,800> l_pix: 9.8349e-03 
+24-06-05 11:03:58.590 - INFO: <epoch:  4, iter:   2,850> l_pix: 8.9823e-03 
+24-06-05 11:04:16.429 - INFO: <epoch:  5, iter:   2,900> l_pix: 3.7319e-03 
+24-06-05 11:04:42.243 - INFO: <epoch:  5, iter:   2,950> l_pix: 4.2282e-03 
+24-06-05 11:05:00.452 - INFO: <epoch:  5, iter:   3,000> l_pix: 6.2210e-03 
+24-06-05 11:05:08.661 - INFO: Saving models and training states.
+24-06-05 11:05:09.083 - INFO: Saved model in [C:/Users/ebjor/DDM2/checkpoint_v2\latest_gen.pth] ...
+24-06-05 11:05:09.098 - INFO: End of training.
